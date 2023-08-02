@@ -4,21 +4,43 @@
         <input 
             type="text"
             placeholder="Введите имя, тег, почту..."
+            @input="setPhrase"
             v-model="phrase"
         >
-        <button>
+        <button @click="isOpen=!isOpen">
             <img src="../assets/sorting.svg" alt="">
         </button>
+
+        <SortingModalComponentVue :isOpen="isOpen"/>
     </header>
 </template>
 
 <script>
+    import SortingModalComponentVue from './SortingModalComponent.vue';
+
     export default{
+        props: ['substr'],
         data() {
             return {
+                isOpen: false,
                 phrase: ''
             }
         },
+        methods: {
+            setPhrase() {
+                this.$emit('setPhrase', {
+                    phrase: this.$data.phrase
+                })
+            }
+        },
+        watch: {
+            resetInput() {
+                if (this.substr === '') {
+                    this.$data.phrase === ''
+                } else return
+            }
+        }
+
     }
 </script>
 
@@ -48,7 +70,7 @@
             outline: none;
         }
 
-        input:active{
+        input:focus{
             background: none;
         }
 
